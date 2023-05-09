@@ -70,6 +70,7 @@
         app:layout_constraintTop_toTopOf="@id/photoImageView" />
 
     <ImageView
+        android:id="@+id/cancelButton"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:padding="6dp"

@@ -15,4 +15,5 @@
     <string name="backbutton">BackButton</string>
     <string name="upload">올리기</string>
     <string name="guide_input_photo_description">사진에 대해 설명해주세요.</string>
+    <string name="image_not_selected">이미지가 선택되지 않았습니다.</string>
 </resources>
