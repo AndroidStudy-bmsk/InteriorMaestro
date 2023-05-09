@@ -10,4 +10,6 @@
     <string name="guid_min_password_length">최소 6자리 이상의 비밀번호를 입력해주세요.</string>
     <string name="email">email</string>
     <string name="password">password</string>
+    <string name="home">홈</string>
+    <string name="my_info">내 정보</string>
 </resources>
