@@ -1,14 +1,10 @@
-package org.bmsk.interiormaestro
+package org.bmsk.interiormaestro.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.core.view.isVisible
-import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import org.bmsk.interiormaestro.R
 import org.bmsk.interiormaestro.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

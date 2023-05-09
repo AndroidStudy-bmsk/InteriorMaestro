@@ -1,4 +1,4 @@
-package org.bmsk.interiormaestro
+package org.bmsk.interiormaestro.ui.auth
 
 import android.os.Bundle
 import android.view.View
@@ -8,7 +8,9 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import org.bmsk.interiormaestro.R
 import org.bmsk.interiormaestro.databinding.FragmentAuthBinding
+import org.bmsk.interiormaestro.ui.MIN_PASSWORD_LENGTH
 
 class AuthFragment: Fragment(R.layout.fragment_auth) {
     private lateinit var binding: FragmentAuthBinding

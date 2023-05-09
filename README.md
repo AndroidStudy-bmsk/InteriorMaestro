@@ -94,3 +94,35 @@ https://developer.android.com/guide/navigation/navigation-ui?hl=ko#bottom_naviga
         android:title="@string/my_info"/>
 </menu>
 ```
+
+## [Photo picker](https://developer.android.com/training/data-storage/shared/photopicker)
+
+```kotlin
+// Registers a photo picker activity launcher in single-select mode.
+val pickMedia = registerForActivityResult(PickVisualMedia()) { uri ->
+    // Callback is invoked after the user selects a media item or closes the
+    // photo picker.
+    if (uri != null) {
+        Log.d("PhotoPicker", "Selected URI: $uri")
+    } else {
+        Log.d("PhotoPicker", "No media selected")
+    }
+}
+
+// Include only one of the following calls to launch(), depending on the types
+// of media that you want to let the user choose from.
+
+// Launch the photo picker and let the user choose images and videos.
+pickMedia.launch(PickVisualMediaRequest(PickVisualMedia.ImageAndVideo))
+
+// Launch the photo picker and let the user choose only images.
+pickMedia.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly))
+
+// Launch the photo picker and let the user choose only videos.
+pickMedia.launch(PickVisualMediaRequest(PickVisualMedia.VideoOnly))
+
+// Launch the photo picker and let the user choose only images/videos of a
+// specific MIME type, such as GIFs.
+val mimeType = "image/gif"
+pickMedia.launch(PickVisualMediaRequest(PickVisualMedia.SingleMimeType(mimeType)))
+```
