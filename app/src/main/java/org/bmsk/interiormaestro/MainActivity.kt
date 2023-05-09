@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        if(Firebase.auth.currentUser == null) {
+        if (Firebase.auth.currentUser == null) {
             initViewsToSignOutState()
         } else {
             initViewsToSignInState()
@@ -38,13 +38,19 @@ class MainActivity : AppCompatActivity() {
     private fun setUpEmailEditText() {
         binding.emailEditText.addTextChangedListener {
             emailTextIsNotEmpty = it.toString().isNotEmpty()
+            updateSignUpButtonState()
         }
     }
 
     private fun setUpPasswordEditText() {
         binding.passwordEditText.addTextChangedListener {
             passwordTextIsNotEmpty = it.toString().isNotEmpty()
+            updateSignUpButtonState()
         }
+    }
+
+    private fun updateSignUpButtonState() {
+        binding.signUpButton.isEnabled = emailTextIsNotEmpty && passwordTextIsNotEmpty
     }
 
     private fun setUpSignUpButton() {
@@ -53,39 +59,27 @@ class MainActivity : AppCompatActivity() {
             val password = binding.passwordEditText.text.toString()
 
             if (emailTextIsNotEmpty.not() || passwordTextIsNotEmpty.not()) {
-                Snackbar.make(
-                    binding.root,
-                    getString(R.string.guid_input_email_or_password),
-                    Snackbar.LENGTH_SHORT
-                ).show()
+                showSnackbar(R.string.guid_input_email_or_password)
                 return@setOnClickListener
             } else if (password.length < MIN_PASSWORD_LENGTH) {
-                Snackbar.make(
-                    binding.root,
-                    getString(R.string.guid_min_password_length),
-                    Snackbar.LENGTH_SHORT
-                ).show()
+                showSnackbar(R.string.guid_min_password_length)
                 return@setOnClickListener
             }
 
-            Firebase.auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Snackbar.make(
-                            binding.root,
-                            getString(R.string.guid_sign_up_success),
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                        initViewsToSignInState()
-                    } else {
-                        Snackbar.make(
-                            binding.root,
-                            getString(R.string.guid_fail_sign_up),
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                    }
-                }
+            createUserWithEmailAndPassword(email, password)
         }
+    }
+
+    private fun createUserWithEmailAndPassword(email: String, password: String) {
+        Firebase.auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    showSnackbar(R.string.guid_sign_up_success)
+                    initViewsToSignInState()
+                } else {
+                    showSnackbar(R.string.guid_fail_sign_up)
+                }
+            }
     }
 
     private fun setUpSignInOutButton() {
@@ -96,34 +90,34 @@ class MainActivity : AppCompatActivity() {
             if (Firebase.auth.currentUser == null) {
                 // 로그인 과정
                 if (emailTextIsNotEmpty.not() || passwordTextIsNotEmpty.not()) {
-                    Snackbar.make(
-                        binding.root,
-                        getString(R.string.guid_input_email_or_password),
-                        Snackbar.LENGTH_SHORT
-                    ).show()
+                    showSnackbar(R.string.guid_input_email_or_password)
                     return@setOnClickListener
                 }
 
-                Firebase.auth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            initViewsToSignInState()
-                        } else {
-                            Snackbar.make(
-                                binding.root,
-                                getString(R.string.guid_fail_sign_in_check_email_or_password),
-                                Snackbar.LENGTH_SHORT
-                            ).show()
-                        }
-                    }.addOnFailureListener {
-                        it.printStackTrace()
-                    }
+                signInWithEmailAndPassword(email, password)
             } else {
                 // 로그아웃 과정
                 Firebase.auth.signOut()
                 initViewsToSignOutState()
             }
         }
+    }
+
+    private fun signInWithEmailAndPassword(email: String, password: String) {
+        Firebase.auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    initViewsToSignInState()
+                } else {
+                    showSnackbar(R.string.guid_fail_sign_in_check_email_or_password)
+                }
+            }.addOnFailureListener {
+                it.printStackTrace()
+            }
+    }
+
+    private fun showSnackbar(messageResId: Int) {
+        Snackbar.make(binding.root, getString(messageResId), Snackbar.LENGTH_SHORT).show()
     }
 
     private fun initViewsToSignInState() {
