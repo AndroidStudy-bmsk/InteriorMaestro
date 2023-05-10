@@ -4,6 +4,53 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:id="@+id/toolbarLayout"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/searchEditText"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/gray_cc"
+            android:drawableStart="@drawable/baseline_search_24"
+            android:drawablePadding="4dp"
+            android:hint="@string/search_content"
+            android:inputType="text"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp" />
+
+        <ImageView
+            android:id="@+id/bookMarkButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="0dp"
+            android:src="@drawable/baseline_bookmark_24"
+            app:tint="?attr/colorOnPrimary"
+            android:contentDescription="@null" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/boarderLine"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/gray_cc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbarLayout" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/homeRecyclerView"
         android:layout_width="0dp"
@@ -11,15 +58,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/boarderLine" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/writeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        android:contentDescription="@null"
         android:src="@drawable/baseline_photo_camera_back_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:tint="?attr/colorOnPrimary" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

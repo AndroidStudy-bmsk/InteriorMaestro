@@ -8,6 +8,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -25,6 +27,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding = FragmentHomeBinding.bind(view)
 
         setUpWriteButton(view)
+        setUpBookMarkButton()
         setUpRecyclerView()
         fetchArticlesData()
     }
@@ -44,8 +47,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
-    private fun setUpRecyclerView() {
+    private fun setUpBookMarkButton() {
+        binding.bookMarkButton.setOnClickListener {
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToBookMarkArticleFragment())
+        }
+    }
 
+    private fun setUpRecyclerView() {
         binding.homeRecyclerView.apply {
             layoutManager = GridLayoutManager(context, 2)
             adapter = articleAdapter
@@ -53,24 +61,65 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun initHomeArticleAdapter(): HomeArticleAdapter {
-        return HomeArticleAdapter {
-            findNavController().navigate(
-                HomeFragmentDirections.actionHomeFragmentToArticleFragment(
-                    articleId = it.articleId.orEmpty()
+        return HomeArticleAdapter(
+            onItemClicked = {
+                findNavController().navigate(
+                    HomeFragmentDirections.actionHomeFragmentToArticleFragment(
+                        articleId = it.articleId.orEmpty()
+                    )
                 )
-            )
-        }
+            },
+            onBookmarkClicked = { articleId, isBookmark ->
+                val uid = Firebase.auth.currentUser?.uid ?: return@HomeArticleAdapter
+                Firebase.firestore.collection("bookmark").document(uid)
+                    .update(
+                        "articleIds",
+                        if (isBookmark) {
+                            FieldValue.arrayUnion(articleId)
+                        } else {
+                            FieldValue.arrayRemove(articleId)
+                        }
+                    ).addOnFailureListener {
+                        if (it is FirebaseFirestoreException && it.code == FirebaseFirestoreException.Code.NOT_FOUND) {
+                            if (isBookmark) {
+                                Firebase.firestore.collection("bookmark").document(uid)
+                                    .set(
+                                        hashMapOf("articleIds" to listOf(articleId))
+                                    )
+                            }
+                        }
+                    }
+            }
+        )
     }
 
     private fun fetchArticlesData() {
-        Firebase.firestore.collection("articles")
+        val uid = Firebase.auth.currentUser?.uid ?: return
+        Firebase.firestore.collection("bookmark").document(uid)
             .get()
-            .addOnSuccessListener { result ->
-                val list = result.map {
-                    it.toObject<ArticleModel>()
-                }
-                articleAdapter.submitList(list)
-            }.addOnFailureListener {
+            .addOnSuccessListener {
+                val bookMarkList = it.get("articleIds") as? List<*>
+
+                Firebase.firestore.collection("articles")
+                    .get()
+                    .addOnSuccessListener { result ->
+                        val list = result
+                            .map { snapshot -> snapshot.toObject<ArticleModel>() }
+                            .map { model ->
+                                ArticleItem(
+                                    articleId = model.articleId.orEmpty(),
+                                    description = model.description.orEmpty(),
+                                    imageUrl = model.imageUrl.orEmpty(),
+                                    isBookmark = bookMarkList?.contains(model.articleId.orEmpty())
+                                        ?: false
+                                )
+                            }
+                        articleAdapter.submitList(list)
+                    }.addOnFailureListener { e ->
+                        e.printStackTrace()
+                    }
+            }
+            .addOnFailureListener {
 
             }
     }

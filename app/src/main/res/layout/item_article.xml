@@ -10,12 +10,25 @@
         android:id="@+id/thumbnailImageView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/grey_cc"
+        android:background="@color/gray_cc"
+        android:contentDescription="@null"
         android:scaleType="centerCrop"
         app:layout_constraintDimensionRatio="W, 10:7"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/bookmarkButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:src="@drawable/baseline_bookmark_border_24"
+        app:layout_constraintBottom_toBottomOf="@id/thumbnailImageView"
+        app:layout_constraintEnd_toEndOf="@id/thumbnailImageView"
+        android:contentDescription="@null" />
 
     <TextView
         android:id="@+id/descriptionTextView"
