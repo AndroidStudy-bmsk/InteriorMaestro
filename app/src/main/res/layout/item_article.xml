@@ -22,13 +22,16 @@
         android:id="@+id/bookmarkButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_margin="4dp"
+        android:contentDescription="@null"
         android:minWidth="48dp"
         android:minHeight="48dp"
+        android:paddingStart="16dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="0dp"
         android:src="@drawable/baseline_bookmark_border_24"
         app:layout_constraintBottom_toBottomOf="@id/thumbnailImageView"
-        app:layout_constraintEnd_toEndOf="@id/thumbnailImageView"
-        android:contentDescription="@null" />
+        app:layout_constraintEnd_toEndOf="@id/thumbnailImageView" />
 
     <TextView
         android:id="@+id/descriptionTextView"
