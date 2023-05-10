@@ -39,7 +39,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 val action = HomeFragmentDirections.actionHomeFragmentToWriteArticleFragment()
                 findNavController().navigate(action)
             } else {
-                Snackbar.make(view, "로그인 후 사용해주세요.", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(view, getString(R.string.guide_use_after_login), Snackbar.LENGTH_SHORT).show()
             }
         }
     }
