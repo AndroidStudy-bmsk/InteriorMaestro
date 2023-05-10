@@ -22,43 +22,59 @@ class BookmarkArticleFragment : Fragment(R.layout.fragment_bookmark_article) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentBookmarkArticleBinding.bind(view)
 
-        binding.toolbar.setupWithNavController(findNavController())
+        setupToolbar()
+        setupRecyclerView()
+        fetchBookmarkedArticles()
+    }
 
+    private fun setupToolbar() {
+        binding.toolbar.setupWithNavController(findNavController())
+    }
+
+    private fun setupRecyclerView() {
         binding.articleRecyclerView.apply {
             layoutManager = GridLayoutManager(context, 2)
             adapter = bookmarkAdapter
         }
+    }
 
+    private fun fetchBookmarkedArticles() {
         val uid = Firebase.auth.currentUser?.uid.orEmpty()
         Firebase.firestore.collection("bookmark")
             .document(uid)
             .get()
-            .addOnSuccessListener {
-                val list = it.get("articleIds") as List<*>
-                if (list.isNotEmpty()) {
-                    Firebase.firestore.collection("articles")
-                        .whereIn("articleId", list)
-                        .get()
-                        .addOnSuccessListener { result ->
-                            bookmarkAdapter.submitList(result.map { article -> article.toObject() })
-                        }
-                        .addOnFailureListener { e ->
-                            e.printStackTrace()
-                        }
-                }
+            .addOnSuccessListener { document ->
+                val articleIds = document.get("articleIds") as List<*>
+                fetchArticles(articleIds)
             }
             .addOnFailureListener { e ->
                 e.printStackTrace()
             }
     }
 
-    private fun initBookmarkArticleAdapter(): BookmarkArticleAdapter {
-        return BookmarkArticleAdapter {
-            findNavController().navigate(
-                BookmarkArticleFragmentDirections.actionBookMarkArticleFragmentToArticleFragment(
-                    it.articleId.orEmpty()
-                )
-            )
+    private fun fetchArticles(articleIds: List<*>) {
+        if (articleIds.isNotEmpty()) {
+            Firebase.firestore.collection("articles")
+                .whereIn("articleId", articleIds)
+                .get()
+                .addOnSuccessListener { result ->
+                    bookmarkAdapter.submitList(result.map { article -> article.toObject() })
+                }
+                .addOnFailureListener { e ->
+                    e.printStackTrace()
+                }
         }
+    }
+
+    private fun initBookmarkArticleAdapter(): BookmarkArticleAdapter {
+        return BookmarkArticleAdapter { navigateToArticleFragment(it.articleId.orEmpty()) }
+    }
+
+    private fun navigateToArticleFragment(articleId: String) {
+        findNavController().navigate(
+            BookmarkArticleFragmentDirections.actionBookMarkArticleFragmentToArticleFragment(
+                articleId
+            )
+        )
     }
 }
