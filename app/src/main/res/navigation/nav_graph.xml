@@ -9,7 +9,7 @@
         android:id="@+id/homeFragment"
         android:name="org.bmsk.interiormaestro.ui.home.HomeFragment"
         android:label="HomeFragment"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_writeArticleFragment"
             app:destination="@id/writeArticleFragment"
@@ -17,13 +17,16 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_homeFragment_to_articleFragment"
+            app:destination="@+id/articleFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/authFragment"
         android:name="org.bmsk.interiormaestro.ui.auth.AuthFragment"
         android:label="AuthFragment"
-        tools:layout="@layout/fragment_auth">
-    </fragment>
+        tools:layout="@layout/fragment_auth" />
     <fragment
         android:id="@+id/writeArticleFragment"
         android:name="org.bmsk.interiormaestro.ui.article.WriteArticleFragment"
@@ -39,6 +42,16 @@
             app:exitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_left" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/articleFragment"
+        android:name="org.bmsk.interiormaestro.ui.article.ArticleFragment"
+        android:label="상세 글 보기 {articleId}"
+        tools:layout="@layout/fragment_article">
+        <argument
+            android:name="articleId"
+            app:argType="string" />
     </fragment>
 
 </navigation>

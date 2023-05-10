@@ -45,6 +45,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
+    // firebase
     implementation platform("com.google.firebase:firebase-bom:31.2.1")
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-firestore-ktx")
@@ -52,8 +53,12 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-analytics-ktx'
 
+    // navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+    // glide
+    implementation("com.github.bumptech.glide:glide:4.15.1")
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
