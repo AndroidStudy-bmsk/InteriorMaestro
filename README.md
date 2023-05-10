@@ -2,6 +2,8 @@
 
 Firebase Auth, Firestore, Firebase Storage, Navigation, Dark Theme
 
+![](.README_images/interiormeastro1.gif) ![](.README_images/interiormeastro2.gif)
+
 ## [Navigation](https://developer.android.com/guide/navigation/navigation-getting-started)
 
 https://github.com/YiBeomSeok/TIL/blob/main/Android/Navigation.md

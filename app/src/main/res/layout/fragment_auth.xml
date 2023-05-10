@@ -36,7 +36,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="15dp"
+        android:backgroundTint="?attr/colorOnPrimary"
         android:text="@string/sign_up"
+        android:textColor="?attr/colorPrimary"
         app:layout_constraintEnd_toStartOf="@+id/signInOutButton"
         app:layout_constraintTop_toBottomOf="@id/passwordEditText" />
 
@@ -44,7 +46,9 @@
         android:id="@+id/signInOutButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="?attr/colorOnPrimary"
         android:text="@string/sign_in"
+        android:textColor="?attr/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/passwordEditText" />
 
